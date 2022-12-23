@@ -1,0 +1,34 @@
+{
+  "name": "iterable.int",
+  "version": "0.1.112",
+  "description": "Iterate over ints.",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "typings": "dist/main.d.ts",
+  "scripts": {
+    "test": "echo 'npm test is currently a no-op'",
+    "postinstall": "./assets/postinstall.sh",
+    "tsc": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ORESoftware/iterable.int.git"
+  },
+  "keywords": [
+    "typescript",
+    "library",
+    "skeleton",
+    "scaffold"
+  ],
+  "author": "Olegzandr V.D.",
+  "license": "SEE LICENSE IN license.md",
+  "bugs": {
+    "url": "https://github.com/ORESoftware/iterable.int/issues"
+  },
+  "homepage": "https://github.com/ORESoftware/iterable.int#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^12.7.2",
+    "typescript": "^3.5.3"
+  }
+}
