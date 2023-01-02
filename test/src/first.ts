@@ -1,4 +1,5 @@
-#!/usr/bin/env node
+#!/usr/bin/env ts-node
+'use strict';
 
 import * as cp from 'child_process';
 import * as path from 'path';
@@ -40,3 +41,9 @@ console.log('/////////');
 for(const v of new IterableInt(-1,-0)){
   console.log(v);
 }
+
+console.log('/////////');
+for(const v of new IterableInt(0, 1)){
+  throw new Error('this should not enter')
+}
+

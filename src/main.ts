@@ -1,5 +1,7 @@
 'use strict';
 
+import assert = require("assert");
+
 export const r2gSmokeTest = function () {
   // r2g command line app uses this exported function
   return true;
@@ -34,13 +36,18 @@ export class IterableInt {
       this.end = val;
     }
 
-
     if(this.start < this.end){
       this.direction = 'up';
       this.point = this.start;
     } else if(this.start > this.end){
       this.direction = 'down';
       this.point = this.start;
+    } else {
+      assert.strictEqual(
+        this.start,
+        this.end,
+        'start and end should be the same value.'
+      );
     }
 
   }
@@ -66,7 +73,7 @@ export class IterableInt {
         if(self.direction === 'down'){
           const value = self.point--;
           const done = value < self.end;
-          return {value, done}
+          return {value, done};
         }
 
         if(self.direction !== 'up'){
@@ -75,7 +82,7 @@ export class IterableInt {
 
         const value = self.point++;
         const done = value > self.end;
-        return {value, done}
+        return {value, done};
 
       }
     }
