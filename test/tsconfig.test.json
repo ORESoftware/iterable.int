@@ -8,7 +8,7 @@
     "sourceMap": false,
     "skipLibCheck": true,
     "rootDir": "src",
-    "declaration": true,
+    "declaration": false,
     "baseUrl": ".",
     "target": "es2020",
     "module": "commonjs",

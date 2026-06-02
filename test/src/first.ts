@@ -10,40 +10,16 @@ import * as EE from 'events';
 import * as strm from "stream";
 import {IterableInt} from "../..";
 
-console.log('your simple typescript test goes here.');
+assert.deepStrictEqual([...new IterableInt(5)], [1, 2, 3, 4, 5]);
+assert.deepStrictEqual([...new IterableInt(-2, 3)], [-2, -1, 0, 1, 2, 3]);
+assert.deepStrictEqual([...new IterableInt(5, 0)], [5, 4, 3, 2, 1, 0]);
+assert.deepStrictEqual([...new IterableInt(4, -3)], [4, 3, 2, 1, 0, -1, -2, -3]);
+assert.deepStrictEqual([...new IterableInt(-4, -3)], [-4, -3]);
+assert.deepStrictEqual([...new IterableInt(-1, -0)], [-1, 0]);
+assert.deepStrictEqual([...new IterableInt(0, 1)], [0, 1]);
+assert.deepStrictEqual([...new IterableInt(1, 1)], []);
 
-console.log('/////////');
-for(const v of new IterableInt(5)){
-  console.log(v);
-}
+assert.throws(() => new IterableInt(1.5), /integer/);
+assert.throws(() => new IterableInt(1, 1.5), /integer/);
 
-console.log('/////////');
-for(const v of new IterableInt(-2,3)){
-  console.log(v);
-}
-
-console.log('/////////');
-for(const v of new IterableInt(5,0)){
-  console.log(v);
-}
-
-console.log('/////////');
-for(const v of new IterableInt(4,-3)){
-  console.log(v);
-}
-
-console.log('/////////');
-for(const v of new IterableInt(-4,-3)){
-  console.log(v);
-}
-
-console.log('/////////');
-for(const v of new IterableInt(-1,-0)){
-  console.log(v);
-}
-
-console.log('/////////');
-for(const v of new IterableInt(0, 1)){
-  throw new Error('this should not enter')
-}
-
+console.log('iterable.int tests passed.');
