@@ -1,6 +1,6 @@
 {
   "name": "iterable.int",
-  "version": "0.1.113",
+  "version": "0.1.114",
   "description": "Iterate over ints.",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
