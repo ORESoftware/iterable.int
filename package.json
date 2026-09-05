@@ -9,7 +9,10 @@
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && scripts/test.sh",
     "postinstall": "./assets/postinstall.sh",
-    "tsc": "tsc -p tsconfig.json"
+    "tsc": "tsc -p tsconfig.json",
+    "lint:ores": "if [ -f .ores-lint/lint.sh ]; then sh .ores-lint/lint.sh; else echo 'ores-lint not installed'; fi",
+    "prepublishOnly": "npm run lint:ores",
+    "prebuild": "npm run lint:ores"
   },
   "repository": {
     "type": "git",
@@ -37,5 +40,13 @@
   },
   "r2g": {
     "test": "node .r2g/tests/phase-contract.cjs --phase-z"
+  },
+  "oresLint": {
+    "note": "Declared, not installed. ores-lint resolves these from a global install - see .ores-lint/README.md",
+    "requires": {
+      "eslint": ">=9",
+      "typescript-eslint": ">=8 (optional; without it .ts files are skipped)"
+    },
+    "install": "npm i -g eslint typescript-eslint"
   }
 }
