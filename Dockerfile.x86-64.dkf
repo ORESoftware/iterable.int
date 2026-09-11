@@ -1,28 +1,22 @@
-# GENERATED from Dockerfile (sha256:fd5f8f3bc58ef8c1) by ores-gha-workflows/scripts/render-dkf.mjs — target linux/amd64. Do not edit; edit Dockerfile and re-render.
-FROM --platform=linux/amd64 node:12
+# GENERATED from Dockerfile (sha256:5a6c2cd411d4188f) by ores-gha-workflows/scripts/render-dkf.mjs — target linux/amd64. Do not edit; edit Dockerfile and re-render.
+FROM --platform=linux/amd64 node:22.16.0-bookworm-slim
 ARG TARGETARCH
 
 USER root
 
 WORKDIR /app
 
-# TODO: if you have a postinstall script, you may need to copy that here too
-COPY assets assets
-COPY package.json .
-COPY package-lock.json .
+COPY package.json ./
 
-RUN npm i --production
+RUN npm install --omit=dev --ignore-scripts && npm cache clean --force
 
-COPY . .
+COPY dist ./dist
 
 ENTRYPOINT ["node", "dist/main.js"]
 
 ENV FORCE_COLOR=1
 
 ARG NODE_ENV
-ENV NODE_ENV ${NODE_ENV:-production}
+ENV NODE_ENV=${NODE_ENV:-production}
 
-# default args go here, overridden by docker run cli
 CMD ["--default","arg"]
-
-
