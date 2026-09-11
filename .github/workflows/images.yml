@@ -1,57 +1,48 @@
-# Caller: validates Dockerfile.arm64.dkf + Dockerfile.x86-64.dkf (or Dockerfile)
-# through the shared immutable ORESoftware container workflow. Publication stays
-# explicitly disabled here until repository-specific registry readiness is reviewed.
+# Verify container sources through the shared immutable ORESoftware image workflow.
+# Publication remains disabled here until repository-specific registry readiness is reviewed.
 name: images
+
 on:
+  pull_request:
+    paths:
+      - ".github/workflows/images.yml"
+      - "Dockerfile"
+      - "Dockerfile.*.dkf"
+      - "Containerfile"
+      - "src/**"
+      - "Cargo.*"
+      - "package*.json"
+      - "pubspec.*"
+      - "go.*"
+      - "gleam.toml"
+      - "manifest.toml"
   push:
     branches: [master]
-    paths: ["Dockerfile", "Dockerfile.*.dkf", "src/**", "Cargo.*", "package*.json", "pubspec.*", "go.*", "gleam.toml", "manifest.toml"]
+    paths:
+      - ".github/workflows/images.yml"
+      - "Dockerfile"
+      - "Dockerfile.*.dkf"
+      - "Containerfile"
+      - "src/**"
+      - "Cargo.*"
+      - "package*.json"
+      - "pubspec.*"
+      - "go.*"
+      - "gleam.toml"
+      - "manifest.toml"
   workflow_dispatch:
-permissions:
-  contents: read
-  packages: write
-  id-token: write
+
 concurrency:
-  group: images-${{ github.ref }}
-  cancel-in-progress: false
+  group: images-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  dkf-drift:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    steps:
-      - name: Check out exact revision
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          persist-credentials: false
-      - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: 22.16.0
-      - name: Verify architecture-derived Dockerfiles with pinned policy
-        shell: bash
-        env:
-          POLICY_REVISION: 149fe9c34e12e9e21747f8c1c6b10c4455952c0e
-          RENDERER_SHA256: 5224d54745f5f04b043897530f0b2d820e4985df1b961e71d71f4a1e4017876a
-        run: |
-          set -euo pipefail
-          renderer="${RUNNER_TEMP}/render-dkf.mjs"
-          curl --proto '=https' --tlsv1.2 --fail --location --silent --show-error \
-            "https://raw.githubusercontent.com/ORESoftware/ores-gha-workflows/${POLICY_REVISION}/scripts/render-dkf.mjs" \
-            --output "$renderer"
-          printf '%s  %s\n' "$RENDERER_SHA256" "$renderer" | sha256sum --check --strict -
-          node "$renderer" . --check
-  images:
-    needs: dkf-drift
+  verify:
+    permissions:
+      contents: read
     uses: ORESoftware/ores-gha-workflows/.github/workflows/container-images.yml@aa2a5143d8968b55fb8cbcc1ba73c9b789e55668
     with:
       image-name: oresoftware/iterable.int
-      push: false
       gcp-project: ""
       dockerhub-namespace: oresoftware
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-      GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-      GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-      BUILD_SECRET_GITHUB_TOKEN: ${{ secrets.SHARED_AUTH_READ_TOKEN }}
+      push: false
