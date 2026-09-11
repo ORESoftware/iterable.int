@@ -40,7 +40,7 @@ jobs:
   verify:
     permissions:
       contents: read
-    uses: ORESoftware/ores-gha-workflows/.github/workflows/container-images.yml@aa2a5143d8968b55fb8cbcc1ba73c9b789e55668
+    uses: ORESoftware/ores-gha-workflows/.github/workflows/container-images.yml@b2d11e4c2821219cb439d983eabba4daac58bd1d
     with:
       image-name: oresoftware/iterable.int
       gcp-project: ""
