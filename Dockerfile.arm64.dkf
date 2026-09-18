@@ -1,4 +1,6 @@
-FROM node:22.16.0-bookworm-slim
+# GENERATED from Dockerfile (sha256:5a6c2cd411d4188f) by ores-gha-workflows/scripts/render-dkf.mjs — target linux/arm64. Do not edit; edit Dockerfile and re-render.
+FROM --platform=linux/arm64 node:22.16.0-bookworm-slim
+ARG TARGETARCH
 
 USER root
 
